@@ -36,6 +36,32 @@ namespace Spotify
             }
         }
 
+        public static void PlayPlaylist()
+        {
+            Console.WriteLine("All playlists:");
+            foreach (Playlist playlist in AllPlaylists)
+            {
+                Console.WriteLine(playlist.Name);
+            }
+
+            Console.Write("\nChoose a playlist to play: ");
+            string selectedPlaylistName = Console.ReadLine();
+
+            Playlist selectedPlaylist = AllPlaylists.FirstOrDefault(p => p.Name == selectedPlaylistName);
+            if (selectedPlaylist != null)
+            {
+                Console.WriteLine($"\nPlaying playlist '{selectedPlaylistName}':");
+                foreach (Song song in selectedPlaylist.Songs)
+                {
+                    Console.WriteLine($"Now playing: {song.songName}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Playlist '{selectedPlaylistName}' does not exist.");
+            }
+        }
+
         public static void CreatePlaylist()
         {
             Console.WriteLine("Create a new playlist.");
