@@ -8,12 +8,13 @@ namespace Spotify
 {
     public class Playlist
     {
-        public string Name { get; set; }
         public List<Song> Songs { get; set; }
+        public string name { get; set; }
+        public bool playing { get; set; } = false; 
 
-        public Playlist(string Name)
+        public Playlist(string name)
         {
-            this.Name = Name;
+            this.name = name;
             Songs = Song.AllSongs;
         }
 
@@ -28,7 +29,7 @@ namespace Spotify
             Console.WriteLine("\nAll playlists:");
             foreach (Playlist playlist in Playlist.AllPlaylists)
             {
-                Console.WriteLine(playlist.Name);
+                Console.WriteLine(playlist.name);
                 foreach (Song song in playlist.Songs)
                 {
                     Console.WriteLine(song.songName);
@@ -41,19 +42,37 @@ namespace Spotify
             Console.WriteLine("All playlists:");
             foreach (Playlist playlist in AllPlaylists)
             {
-                Console.WriteLine(playlist.Name);
+                Console.WriteLine($"- {playlist.name}");
             }
 
-            Console.Write("\nChoose a playlist to play: ");
+            Console.Write("Choose a playlist: ");
             string selectedPlaylistName = Console.ReadLine();
+            Playlist selectedPlaylist = AllPlaylists.FirstOrDefault(p => p.name == selectedPlaylistName);
 
-            Playlist selectedPlaylist = AllPlaylists.FirstOrDefault(p => p.Name == selectedPlaylistName);
-            if (selectedPlaylist != null)
+            if (AllPlaylists.Contains(selectedPlaylist))
             {
-                Console.WriteLine($"\nPlaying playlist '{selectedPlaylistName}':");
+                Console.WriteLine($"playlist: '{selectedPlaylistName}':");
+                Console.WriteLine("Songs:");
                 foreach (Song song in selectedPlaylist.Songs)
                 {
-                    Console.WriteLine($"Now playing: {song.songName}");
+                    Console.WriteLine($"-- {song.songName}");
+                }
+
+                Console.WriteLine("Choose a song:");
+                string songChoice = Console.ReadLine();
+                Song selectedSong = Song.AllSongs.FirstOrDefault(s => s.songName == songChoice);
+
+                //play the selected song
+                bool playing = true;
+                int songDuration = selectedSong.songDuration;
+
+                if (Song.AllSongs.Contains(selectedSong))
+                {
+                    Console.WriteLine(songDuration);
+                    //while (playing)
+                    //{
+                    //    Console.Write($"playing... {selectedSong.songName}");
+                    //}
                 }
             }
             else
@@ -70,7 +89,7 @@ namespace Spotify
 
             if (!string.IsNullOrWhiteSpace(newPlaylistName))
             {
-                if (!AllPlaylists.Any(p => p.Name == newPlaylistName))
+                if (!AllPlaylists.Any(p => p.name == newPlaylistName))
                 {
                     Playlist newPlaylist = new Playlist(newPlaylistName);
                     AllPlaylists.Add(newPlaylist);
@@ -79,7 +98,7 @@ namespace Spotify
                     Console.WriteLine("all playlists:");
                     foreach (Playlist playlist in AllPlaylists)
                     {
-                        Console.WriteLine(playlist.Name);
+                        Console.WriteLine(playlist.name);
                     }
                 }
                 else
@@ -98,7 +117,7 @@ namespace Spotify
             Console.WriteLine("All playlists:");
             foreach (Playlist playlist in AllPlaylists)
             {
-                Console.WriteLine(playlist.Name);
+                Console.WriteLine(playlist.name);
             }
 
             Console.Write("\nChoose a playlist you want to delete: ");
@@ -106,7 +125,7 @@ namespace Spotify
 
             if (!string.IsNullOrWhiteSpace(deletePlaylistName))
             {
-                Playlist playlistToDelete = AllPlaylists.FirstOrDefault(p => p.Name == deletePlaylistName);
+                Playlist playlistToDelete = AllPlaylists.FirstOrDefault(p => p.name == deletePlaylistName);
                 if (playlistToDelete != null)
                 {
                     AllPlaylists.Remove(playlistToDelete);
@@ -115,7 +134,7 @@ namespace Spotify
                     Console.WriteLine("all playlists:");
                     foreach (Playlist playlist in AllPlaylists)
                     {
-                        Console.WriteLine(playlist.Name);
+                        Console.WriteLine(playlist.name);
                     }
                 }
                 else

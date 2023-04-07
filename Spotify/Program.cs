@@ -28,14 +28,15 @@ namespace Spotiy
                         Playlist.ViewPlaylists();
                         break;
                     case "2" or "manage-playlists":
-                        Console.WriteLine("1. create-playlist");
-                        Console.WriteLine("2. delete-playlist");
+                        Console.WriteLine("1. play-song");
+                        Console.WriteLine("2. create-playlist");
+                        Console.WriteLine("3. delete-playlist");
                         Console.WriteLine("Choose an option:");
                         string choiceManagePlaylists = Console.ReadLine();
 
                         switch (choiceManagePlaylists)
                         {
-                            case "1" or "play":
+                            case "1" or "play-song":
                                 Playlist.PlayPlaylist();
                                 break;
                             case "2" or "create-playlist":

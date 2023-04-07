@@ -21,8 +21,8 @@ namespace Spotify
 
         public static List<Song> AllSongs { get; set; } = new List<Song>
         {
-            new Song("Bohemian Rhapsody", "Queen", 367),
-            new Song("AnusVet", "Queen", 367)
+            new Song("testnummer", "testartiest", 200),
+            new Song("AnusVet", "rick", 180)
         };
 
         public static void ViewSongs()
@@ -30,7 +30,7 @@ namespace Spotify
             Console.WriteLine("\nAll songs: ");
             foreach (Playlist playlist in Playlist.AllPlaylists)
             {
-                Console.WriteLine($"Playlist: {playlist.Name}");
+                Console.WriteLine($"Playlist: {playlist.name}");
                 foreach (Song songs in Song.AllSongs)
                 {
                     Console.WriteLine($"- {songs.songName} by {songs.artistName} ({songs.songDuration} seconds)");
@@ -43,13 +43,13 @@ namespace Spotify
             Console.WriteLine("To which playlist do you want to add a song:");
             foreach (Playlist playlist in Playlist.AllPlaylists)
             {
-                Console.WriteLine(playlist.Name);
+                Console.WriteLine(playlist.name);
             }
 
             Console.Write("Enter the name of the playlist you want to add the song to: ");
             string playlistName = Console.ReadLine();
 
-            Playlist addSongToPlaylist = Playlist.AllPlaylists.Find(p => p.Name == playlistName);
+            Playlist addSongToPlaylist = Playlist.AllPlaylists.Find(p => p.name == playlistName);
 
             if (addSongToPlaylist != null)
             {
@@ -67,7 +67,7 @@ namespace Spotify
 
                 foreach (Playlist playlist in Playlist.AllPlaylists)
                 {
-                    Console.WriteLine($"Playlist: {playlist.Name}");
+                    Console.WriteLine($"Playlist: {playlist.name}");
 
                     foreach (Song song in playlist.Songs)
                     {
@@ -87,13 +87,13 @@ namespace Spotify
             Console.WriteLine("From which playlist do you want to remove a song:");
             foreach (Playlist playlist in Playlist.AllPlaylists)
             {
-                Console.WriteLine(playlist.Name);
+                Console.WriteLine(playlist.name);
             }
 
             Console.Write("Enter the name of the playlist you want to remove the song from: ");
             string playlistName = Console.ReadLine();
 
-            Playlist removeSongFromPlaylist = Playlist.AllPlaylists.Find(p => p.Name == playlistName);
+            Playlist removeSongFromPlaylist = Playlist.AllPlaylists.Find(p => p.name == playlistName);
 
             if (removeSongFromPlaylist != null)
             {
