@@ -109,6 +109,14 @@ namespace Spotify
                                             Console.WriteLine($"Resuming song {selectedSong.songName}.");
                                         }
                                         break;
+                                    case ConsoleKey.E:
+                                        if (paused)
+                                        {
+                                            timeElapsed = 0;
+                                            Console.WriteLine($"\nRepeating song {selectedSong.songName}");
+                                            paused = false;
+                                        }
+                                        break;
                                     case ConsoleKey.S:
                                         playing = false;
                                         Console.WriteLine("\nSong skipped.");
