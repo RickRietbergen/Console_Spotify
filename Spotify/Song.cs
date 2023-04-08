@@ -75,6 +75,8 @@ namespace Spotify
                     }
                 }
 
+                Thread.Sleep(1000);
+                Console.Clear();
             }
             else
             {
@@ -110,6 +112,9 @@ namespace Spotify
 
                         // Print the updated playlist
                         Playlist.ViewPlaylists();
+
+                        Thread.Sleep(1000);
+                        Console.Clear();
                     }
                     else
                     {

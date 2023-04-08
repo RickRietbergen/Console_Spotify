@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Spotiy;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,16 +13,16 @@ namespace Spotify
         public string name { get; set; }
         public bool playing { get; set; } = false; 
 
-        public Playlist(string name)
+        public Playlist(string name, List<Song> songs = null)
         {
             this.name = name;
-            Songs = Song.AllSongs;
+            Songs = songs ?? new List<Song>();
         }
 
         public static List<Playlist> AllPlaylists { get; set; } = new List<Playlist>
         {
-            new Playlist("cowboy"),
-            new Playlist("queen")
+            new Playlist("cowboy", new List<Song>(Song.AllSongs)),
+            new Playlist("queen", new List<Song>(Song.AllSongs.Take(2)))
         };
 
         public static void ViewPlaylists()
@@ -36,95 +37,106 @@ namespace Spotify
 
         public static void PlayPlaylist()
         {
-            
-
+            Console.WriteLine("To Exit Press Key: Q");
             Console.Write("Choose a playlist: ");
             string selectedPlaylistName = Console.ReadLine();
             Playlist selectedPlaylist = AllPlaylists.FirstOrDefault(p => p.name == selectedPlaylistName);
 
-            if (AllPlaylists.Contains(selectedPlaylist))
+            if (selectedPlaylistName == "q" || selectedPlaylistName == null)
             {
-                Console.WriteLine($"playlist: '{selectedPlaylistName}':");
-                Console.WriteLine("Songs:");
-                foreach (Song song in selectedPlaylist.Songs)
-                {
-                    Console.WriteLine($"-- {song.songName}");
-                }
-
-                Console.WriteLine("Choose a song:");
-                string songChoice = Console.ReadLine();
-                Song selectedSong = Song.AllSongs.FirstOrDefault(s => s.songName == songChoice);
-
-                //play the selected song
-                bool playing = true;
-                int songDuration = selectedSong.songDuration;
-                string songArtist = selectedSong.artistName;
-                int timeElapsed = 0;
-                bool paused = false;
-
-                if (Song.AllSongs.Contains(selectedSong))
-                {
-                    Console.WriteLine($"Song selected: {selectedSong.songName}");
-                    Console.WriteLine($"Artist: {songArtist}");
-                    Console.WriteLine($"duration: {songDuration}");
-
-                    while (playing)
-                    {
-                        if (!paused)
-                        {
-                            Console.SetCursorPosition(0, Console.CursorTop);
-                            Console.Write($"playing... {selectedSong.songName} ({timeElapsed}/{songDuration})");
-
-                            if (timeElapsed > songDuration)
-                            {
-                                Console.WriteLine("\nSong finished!");
-                                playing = false;
-                            }
-                        }
-
-                        if (Console.KeyAvailable)
-                        {
-                            ConsoleKey key = Console.ReadKey(true).Key;
-
-                            switch (key)
-                            {
-                                case ConsoleKey.P:
-                                    if (!paused)
-                                    {
-                                        paused = true;
-                                        Console.WriteLine("\nPaused.");
-                                    }
-                                    break;
-                                case ConsoleKey.R:
-                                    if (paused)
-                                    {
-                                        paused = false;
-                                        Console.WriteLine("\nResumed.");
-                                    }
-                                    break;
-                                case ConsoleKey.S:
-                                    playing = false;
-                                    Console.WriteLine("\nSkipped.");
-                                    break;
-                                case ConsoleKey.Q:
-                                    playing = false;
-                                    Console.WriteLine("\nQuitting.");
-                                    break;
-                            }
-                        }
-
-                        // wait for 1 second
-                        Thread.Sleep(1000);
-                        if (!paused)
-                        {
-                            timeElapsed++;
-                        }
-                    }
-                }
+                Console.Clear();
+                return;     
             }
             else
             {
-                Console.WriteLine($"Playlist '{selectedPlaylistName}' does not exist.");
+                if (AllPlaylists.Contains(selectedPlaylist))
+                {
+                    Console.WriteLine($"playlist: '{selectedPlaylistName}':");
+                    Console.WriteLine("Songs:");
+                    foreach (Song song in selectedPlaylist.Songs)
+                    {
+                        Console.WriteLine($"-- {song.songName}");
+                    }
+
+                    Console.WriteLine("Choose a song:");
+                    string songChoice = Console.ReadLine();
+                    Song selectedSong = Song.AllSongs.FirstOrDefault(s => s.songName == songChoice);
+
+                    //play the selected song
+                    bool playing = true;
+                    int songDuration = selectedSong.songDuration;
+                    string songArtist = selectedSong.artistName;
+                    int timeElapsed = 0;
+                    bool paused = false;
+
+                    if (Song.AllSongs.Contains(selectedSong))
+                    {
+                        Console.WriteLine($"Song selected: {selectedSong.songName}");
+                        Console.WriteLine($"Artist: {songArtist}");
+                        Console.WriteLine($"duration: {songDuration}");
+
+                        while (playing)
+                        {
+                            if (!paused)
+                            {
+                                Console.SetCursorPosition(0, Console.CursorTop);
+                                Console.Write($"playing... {selectedSong.songName} ({timeElapsed}/{songDuration})");
+
+                                if (timeElapsed > songDuration)
+                                {
+                                    Console.WriteLine("\nSong finished!");
+                                    playing = false;
+                                }
+                            }
+
+                            if (Console.KeyAvailable)
+                            {
+                                ConsoleKey key = Console.ReadKey(true).Key;
+
+                                switch (key)
+                                {
+                                    case ConsoleKey.P:
+                                        if (!paused)
+                                        {
+                                            paused = true;
+                                            Console.WriteLine("\nPaused Song.");
+                                        }
+                                        break;
+                                    case ConsoleKey.R:
+                                        if (paused)
+                                        {
+                                            paused = false;
+                                            Console.WriteLine($"Resuming song {selectedSong.songName}.");
+                                        }
+                                        break;
+                                    case ConsoleKey.S:
+                                        playing = false;
+                                        Console.WriteLine("\nSong skipped.");
+                                        Thread.Sleep(1000);
+                                        Console.Clear();
+                                        break;
+                                    case ConsoleKey.Q:
+                                        playing = false;
+                                        Console.WriteLine("\nQuitting...");
+                                        Thread.Sleep(1000);
+                                        Console.Clear();
+                                        break;
+                                }
+                            }
+
+                            // wait for 1 second
+                            Thread.Sleep(1000);
+                            if (!paused)
+                            {
+                                timeElapsed++;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Playlist '{selectedPlaylistName}' does not exist.");
+                }
             }
         }
 
@@ -147,6 +159,8 @@ namespace Spotify
                     {
                         Console.WriteLine(playlist.name);
                     }
+                    Thread.Sleep(1000);
+                    Console.Clear();
                 }
                 else
                 {
@@ -183,6 +197,9 @@ namespace Spotify
                     {
                         Console.WriteLine(playlist.name);
                     }
+
+                    Thread.Sleep(1000);
+                    Console.Clear();
                 }
                 else
                 {
