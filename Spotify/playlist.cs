@@ -26,24 +26,17 @@ namespace Spotify
 
         public static void ViewPlaylists()
         {
-            Console.WriteLine("\nAll playlists:");
-            foreach (Playlist playlist in Playlist.AllPlaylists)
-            {
-                Console.WriteLine(playlist.name);
-                foreach (Song song in playlist.Songs)
-                {
-                    Console.WriteLine(song.songName);
-                }
-            }
-        }
-
-        public static void PlayPlaylist()
-        {
             Console.WriteLine("All playlists:");
             foreach (Playlist playlist in AllPlaylists)
             {
                 Console.WriteLine($"- {playlist.name}");
             }
+            PlayPlaylist();
+        }
+
+        public static void PlayPlaylist()
+        {
+            
 
             Console.Write("Choose a playlist: ");
             string selectedPlaylistName = Console.ReadLine();
@@ -65,14 +58,68 @@ namespace Spotify
                 //play the selected song
                 bool playing = true;
                 int songDuration = selectedSong.songDuration;
+                string songArtist = selectedSong.artistName;
+                int timeElapsed = 0;
+                bool paused = false;
 
                 if (Song.AllSongs.Contains(selectedSong))
                 {
-                    Console.WriteLine(songDuration);
-                    //while (playing)
-                    //{
-                    //    Console.Write($"playing... {selectedSong.songName}");
-                    //}
+                    Console.WriteLine($"Song selected: {selectedSong.songName}");
+                    Console.WriteLine($"Artist: {songArtist}");
+                    Console.WriteLine($"duration: {songDuration}");
+
+                    while (playing)
+                    {
+                        if (!paused)
+                        {
+                            Console.SetCursorPosition(0, Console.CursorTop);
+                            Console.Write($"playing... {selectedSong.songName} ({timeElapsed}/{songDuration})");
+
+                            if (timeElapsed > songDuration)
+                            {
+                                Console.WriteLine("\nSong finished!");
+                                playing = false;
+                            }
+                        }
+
+                        if (Console.KeyAvailable)
+                        {
+                            ConsoleKey key = Console.ReadKey(true).Key;
+
+                            switch (key)
+                            {
+                                case ConsoleKey.P:
+                                    if (!paused)
+                                    {
+                                        paused = true;
+                                        Console.WriteLine("\nPaused.");
+                                    }
+                                    break;
+                                case ConsoleKey.R:
+                                    if (paused)
+                                    {
+                                        paused = false;
+                                        Console.WriteLine("\nResumed.");
+                                    }
+                                    break;
+                                case ConsoleKey.S:
+                                    playing = false;
+                                    Console.WriteLine("\nSkipped.");
+                                    break;
+                                case ConsoleKey.Q:
+                                    playing = false;
+                                    Console.WriteLine("\nQuitting.");
+                                    break;
+                            }
+                        }
+
+                        // wait for 1 second
+                        Thread.Sleep(1000);
+                        if (!paused)
+                        {
+                            timeElapsed++;
+                        }
+                    }
                 }
             }
             else

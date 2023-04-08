@@ -51,7 +51,19 @@ namespace Spotiy
                         }
                         break;
                     case "3" or "manage-song":
-                        Console.WriteLine("manage-song");
+                        Console.WriteLine("1. add-song");
+                        Console.WriteLine("2. delete-song");
+                        string choiceManagesongs = Console.ReadLine();
+
+                        switch (choiceManagesongs)
+                        {
+                            case "1" or "add-song":
+                                Song.AddSong();
+                                break;
+                            case "2" or "delete-song":
+                                Song.RemoveSong();
+                                break;
+                        }
                         break;
                     case "4" or "view-albums":
                         Console.WriteLine("view-albums");
@@ -64,13 +76,7 @@ namespace Spotiy
                         break;
                     case "7":
                         Song.ViewSongs();
-                        break;
-                    case "8":
-                        Song.AddSong();
-                        break;
-                    case "9":
-                        Song.RemoveSong();
-                        break;
+                        break;                    
                     default:
                         Console.WriteLine("Invalid option.");
                         break;
@@ -81,7 +87,7 @@ namespace Spotiy
 
         public static void commands()
         {
-            Console.WriteLine("-- Commands --");
+            Console.WriteLine("<--- Commands --->");
             Console.WriteLine("====================");
             //1. view all the playlists, choose one to view the songs inside the chosen playlist. choose shuffle or select a song, then see whats playing, when playing give options to pause/continue, repeat or quit.
             Console.WriteLine("1. view-playlists");
