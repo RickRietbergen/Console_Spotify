@@ -10,12 +10,14 @@ namespace Spotify
     public class Playlist
     {
         public List<Song> Songs { get; set; }
-        public string name { get; set; }
-        public bool playing { get; set; } = false; 
+        public string playlistName { get; set; }
+        public static bool isPlaying { get; set; } = false; 
+        public static bool paused { get; set; } = false;
+        public static int timeElapsed { get; set; } = 0;
 
-        public Playlist(string name, List<Song> songs = null)
+        public Playlist(string playlistName, List<Song> songs = null)
         {
-            this.name = name;
+            this.playlistName = playlistName;
             Songs = songs ?? new List<Song>();
         }
 
@@ -30,7 +32,7 @@ namespace Spotify
             Console.WriteLine("All playlists:");
             foreach (Playlist playlist in AllPlaylists)
             {
-                Console.WriteLine($"- {playlist.name}");
+                Console.WriteLine($"- {playlist.playlistName}");
             }
             PlayPlaylist();
         }
@@ -40,17 +42,19 @@ namespace Spotify
             Console.WriteLine("To Exit Press Key: Q");
             Console.Write("Choose a playlist: ");
             string selectedPlaylistName = Console.ReadLine();
-            Playlist selectedPlaylist = AllPlaylists.FirstOrDefault(p => p.name == selectedPlaylistName);
+            Playlist selectedPlaylist = AllPlaylists.FirstOrDefault(p => p.playlistName == selectedPlaylistName);
 
-            if (selectedPlaylistName == "q" || selectedPlaylistName == null)
+            if (selectedPlaylistName.ToLower() == "q" || selectedPlaylistName == null)
             {
                 Console.Clear();
                 return;     
             }
             else
             {
+                Console.Clear();
                 if (AllPlaylists.Contains(selectedPlaylist))
                 {
+                    Console.WriteLine("Choose 'shuffle' to play a random song, or choose a song u want to play.");
                     Console.WriteLine($"playlist: '{selectedPlaylistName}':");
                     Console.WriteLine("Songs:");
                     foreach (Song song in selectedPlaylist.Songs)
@@ -60,22 +64,31 @@ namespace Spotify
 
                     Console.WriteLine("Choose a song:");
                     string songChoice = Console.ReadLine();
-                    Song selectedSong = Song.AllSongs.FirstOrDefault(s => s.songName == songChoice);
+                    Song selectedSong;
+
+                    if (songChoice.ToLower() == "shuffle")
+                    {
+                        Random rand = new Random();
+                        selectedSong = Song.AllSongs[rand.Next(0, Song.AllSongs.Count)];
+                    }
+                    else
+                    {
+                        selectedSong = Song.AllSongs.FirstOrDefault(s => s.songName == songChoice);
+                    }
 
                     //play the selected song
-                    bool playing = true;
+                    isPlaying = true;
                     int songDuration = selectedSong.songDuration;
                     string songArtist = selectedSong.artistName;
-                    int timeElapsed = 0;
-                    bool paused = false;
 
                     if (Song.AllSongs.Contains(selectedSong))
                     {
+                        Console.Clear();
                         Console.WriteLine($"Song selected: {selectedSong.songName}");
                         Console.WriteLine($"Artist: {songArtist}");
                         Console.WriteLine($"duration: {songDuration}");
 
-                        while (playing)
+                        while (isPlaying)
                         {
                             if (!paused)
                             {
@@ -85,7 +98,7 @@ namespace Spotify
                                 if (timeElapsed > songDuration)
                                 {
                                     Console.WriteLine("\nSong finished!");
-                                    playing = false;
+                                    isPlaying = false;
                                 }
                             }
 
@@ -113,20 +126,20 @@ namespace Spotify
                                         if (paused)
                                         {
                                             timeElapsed = 0;
-                                            Console.WriteLine($"\nRepeating song {selectedSong.songName}");
+                                            Console.WriteLine($"Repeating song {selectedSong.songName}");
                                             paused = false;
                                         }
                                         break;
                                     case ConsoleKey.S:
-                                        playing = false;
-                                        Console.WriteLine("\nSong skipped.");
-                                        Thread.Sleep(1000);
+                                        isPlaying = false;
+                                        Console.WriteLine("Song skipped.");
+                                        Thread.Sleep(2000);
                                         Console.Clear();
                                         break;
                                     case ConsoleKey.Q:
-                                        playing = false;
-                                        Console.WriteLine("\nQuitting...");
-                                        Thread.Sleep(1000);
+                                        isPlaying = false;
+                                        Console.WriteLine("Quitting...");
+                                        Thread.Sleep(2000);
                                         Console.Clear();
                                         break;
                                 }
@@ -150,34 +163,43 @@ namespace Spotify
 
         public static void CreatePlaylist()
         {
+            Console.WriteLine("To Exit Press Key: Q");
             Console.WriteLine("Create a new playlist.");
             Console.Write("Enter the name of the playlist: ");
             string newPlaylistName = Console.ReadLine();
 
-            if (!string.IsNullOrWhiteSpace(newPlaylistName))
+            if (newPlaylistName.ToLower() == "q" || newPlaylistName == null)
             {
-                if (!AllPlaylists.Any(p => p.name == newPlaylistName))
-                {
-                    Playlist newPlaylist = new Playlist(newPlaylistName);
-                    AllPlaylists.Add(newPlaylist);
-                    Console.WriteLine($"Playlist '{newPlaylistName}' has been created.");
-
-                    Console.WriteLine("all playlists:");
-                    foreach (Playlist playlist in AllPlaylists)
-                    {
-                        Console.WriteLine(playlist.name);
-                    }
-                    Thread.Sleep(1000);
-                    Console.Clear();
-                }
-                else
-                {
-                    Console.WriteLine($"Playlist '{newPlaylistName}' already exists.");
-                }
+                Console.Clear();
+                return;
             }
             else
             {
-                Console.WriteLine("Error, please provide a name for the playlist.");
+                if (!string.IsNullOrWhiteSpace(newPlaylistName))
+                {
+                    if (!AllPlaylists.Any(p => p.playlistName == newPlaylistName))
+                    {
+                        Playlist newPlaylist = new Playlist(newPlaylistName);
+                        AllPlaylists.Add(newPlaylist);
+                        Console.WriteLine($"Playlist '{newPlaylistName}' has been created.");
+
+                        Console.WriteLine("all playlists:");
+                        foreach (Playlist playlist in AllPlaylists)
+                        {
+                            Console.WriteLine(playlist.playlistName);
+                        }
+                        Thread.Sleep(2000);
+                        Console.Clear();
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Playlist '{newPlaylistName}' already exists.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Error, please provide a name for the playlist.");
+                }
             }
         }
 
@@ -186,37 +208,46 @@ namespace Spotify
             Console.WriteLine("All playlists:");
             foreach (Playlist playlist in AllPlaylists)
             {
-                Console.WriteLine(playlist.name);
+                Console.WriteLine(playlist.playlistName);
             }
 
+            Console.WriteLine("To Exit Press Key: Q");
             Console.Write("\nChoose a playlist you want to delete: ");
             string deletePlaylistName = Console.ReadLine();
 
-            if (!string.IsNullOrWhiteSpace(deletePlaylistName))
+            if (deletePlaylistName.ToLower() == "q" || deletePlaylistName == null)
             {
-                Playlist playlistToDelete = AllPlaylists.FirstOrDefault(p => p.name == deletePlaylistName);
-                if (playlistToDelete != null)
-                {
-                    AllPlaylists.Remove(playlistToDelete);
-                    Console.WriteLine($"Playlist '{deletePlaylistName}' has been deleted.");
-
-                    Console.WriteLine("all playlists:");
-                    foreach (Playlist playlist in AllPlaylists)
-                    {
-                        Console.WriteLine(playlist.name);
-                    }
-
-                    Thread.Sleep(1000);
-                    Console.Clear();
-                }
-                else
-                {
-                    Console.WriteLine($"Playlist '{deletePlaylistName}' does not exist.");
-                }
+                Console.Clear();
+                return;
             }
             else
             {
-                Console.WriteLine("Error. Please enter a playlist name.");
+                if (!string.IsNullOrWhiteSpace(deletePlaylistName))
+                {
+                    Playlist playlistToDelete = AllPlaylists.FirstOrDefault(p => p.playlistName == deletePlaylistName);
+                    if (playlistToDelete != null)
+                    {
+                        AllPlaylists.Remove(playlistToDelete);
+                        Console.WriteLine($"Playlist '{deletePlaylistName}' has been deleted.");
+
+                        Console.WriteLine("all playlists:");
+                        foreach (Playlist playlist in AllPlaylists)
+                        {
+                            Console.WriteLine(playlist.playlistName);
+                        }
+
+                        Thread.Sleep(2000);
+                        Console.Clear();
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Playlist '{deletePlaylistName}' does not exist.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Error. Please enter a playlist name.");
+                }
             }
         }
     }

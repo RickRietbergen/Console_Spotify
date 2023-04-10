@@ -62,12 +62,9 @@ namespace Spotiy
                         }
                         break;
                     case "4" or "view-albums":
-                        Console.WriteLine("view-albums");
+                        Album.ViewAlbums();
                         break;
-                    case "5" or "manage-albums":
-                        Console.WriteLine("manage-albums");
-                        break;
-                    case "6" or "view-friends":
+                    case "5" or "view-friends":
                         Console.WriteLine("view-friends");
                         break;
                     case "7":
@@ -93,10 +90,8 @@ namespace Spotiy
             Console.WriteLine("3. manage-song");
             //4. view all the albums, choose albums or exit the option, suffle album or choose song from album then see whats playing, when playing give options to pause/continue, repeat or quit.
             Console.WriteLine("4. view-albums");
-            // 5. set readline, choose to add a album to playlist, 
-            Console.WriteLine("5. manage-albums");
             // 6. see ur friends, friends also have playlists(hardcoded). see which songs in playlists are the same.
-            Console.WriteLine("6. view-friends");
+            Console.WriteLine("5. view-friends");
             Console.WriteLine("====================");
         }
     }
