@@ -215,7 +215,7 @@ namespace Spotify
                 {
                     foreach (Album album in allAlbumSongs)
                     {
-                        Console.WriteLine(album.albumSongName); ;
+                        Console.WriteLine(album.albumSongName);
                         //foreach (Song song in allAlbumSongs)
                         //{
                         //    chosenPlaylist.Songs.Add(song);

@@ -25,13 +25,15 @@ namespace Spotiy
                 switch (choice)
                 {
                     case "1" or "view-playlists":
-                        //view playlist function, get all playlists 
+                        //view playlist function, get all playlists.
                         Playlist.ViewPlaylists();
                         break;
                     case "2" or "manage-playlists":
+                        //ask user which option you want to execute.
                         Console.WriteLine("1. create-playlist");
                         Console.WriteLine("2. delete-playlist");
                         Console.WriteLine("Choose an option:");
+                        //create var with awnser and go to selected function
                         string choiceManagePlaylists = Console.ReadLine();
 
                         switch (choiceManagePlaylists)
