@@ -25,6 +25,7 @@ namespace Spotiy
                 switch (choice)
                 {
                     case "1" or "view-playlists":
+                        //view playlist function, get all playlists 
                         Playlist.ViewPlaylists();
                         break;
                     case "2" or "manage-playlists":
@@ -64,7 +65,10 @@ namespace Spotiy
                     case "4" or "view-albums":
                         Album.ViewAlbums();
                         break;
-                    case "5" or "view-friends":
+                    case "5" or "add-album-to-playlist":
+                        Album.AddAlbumToPlaylist();
+                        break;
+                    case "6" or "view-friends":
                         Console.WriteLine("view-friends");
                         break;
                     case "7":
@@ -82,16 +86,18 @@ namespace Spotiy
         {
             Console.WriteLine("<--- Commands --->");
             Console.WriteLine("====================");
-            //1. view all the playlists, choose one to view the songs inside the chosen playlist. choose shuffle or select a song, then see whats playing, when playing give options to pause/continue, repeat or quit.
+            //1. view all the playlists, choose one to view the songs inside the chosen playlist. choose shuffle or select a song, then see whats playing, when playing give options to pause/continue, skip, repeat or quit.
             Console.WriteLine("1. view-playlists");
-            //2. goes to another readline where u can create, delete playlists or delete songs
+            //2. goes to another readline where u can create, delete playlists.
             Console.WriteLine("2. manage-playlists");
-            // 3. select the playlist u want to add a songs, see the hardcoded songs. then give mssg that the song has been added.
+            // 3. select the playlist where u want to add a songs, or delete songs.
             Console.WriteLine("3. manage-song");
             //4. view all the albums, choose albums or exit the option, suffle album or choose song from album then see whats playing, when playing give options to pause/continue, repeat or quit.
             Console.WriteLine("4. view-albums");
+            // 5. add album to a playlist, choose which playlist u want to add the album to. 
+            Console.WriteLine("5. add-album-to-playlist");
             // 6. see ur friends, friends also have playlists(hardcoded). see which songs in playlists are the same.
-            Console.WriteLine("5. view-friends");
+            Console.WriteLine("6. view-friends");
             Console.WriteLine("====================");
         }
     }

@@ -132,13 +132,13 @@ namespace Spotify
                                         break;
                                     case ConsoleKey.S:
                                         isPlaying = false;
-                                        Console.WriteLine("Song skipped.");
+                                        Console.WriteLine("\nSong skipped.");
                                         Thread.Sleep(2000);
                                         Console.Clear();
                                         break;
                                     case ConsoleKey.Q:
                                         isPlaying = false;
-                                        Console.WriteLine("Quitting...");
+                                        Console.WriteLine("\nQuitting...");
                                         Thread.Sleep(2000);
                                         Console.Clear();
                                         break;

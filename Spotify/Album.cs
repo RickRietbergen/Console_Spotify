@@ -15,6 +15,7 @@ namespace Spotify
         public static bool isPlaying { get; set; } = false;
         public static bool paused { get; set; } = false;
         public static int timeElapsed { get; set; } = 0;
+        public IEnumerable<Song> songs { get; private set; }
 
         public Album(string albumSongName, string albumArtistName, int songDuration)
         {
@@ -175,6 +176,59 @@ namespace Spotify
                 else
                 {
                     Console.WriteLine($"Album '{selectedAlbumName}' does not exist.");
+                }
+            }
+        }
+
+        public static void AddAlbumToPlaylist()
+        {
+            Console.WriteLine("All albums:");
+            foreach (Album album in AllAlbums)
+            {
+                Console.WriteLine($"- {album.albumSongName}");
+            }
+
+            Console.WriteLine("Which album do you want to add to a playlist:");
+            string choiceAlbumName = Console.ReadLine();
+            Album selectedAlbum = Album.AllAlbums.FirstOrDefault(a => a.albumSongName == choiceAlbumName);
+
+            if (choiceAlbumName.ToLower() == "q" || choiceAlbumName == null || selectedAlbum == null)
+            {
+                Console.WriteLine($"Album {choiceAlbumName} does not exist.");
+                Thread.Sleep(2000);
+                Console.Clear();
+                return;
+            }
+            else
+            {
+                Console.WriteLine("All playlists:");
+                foreach (Playlist playlist in Playlist.AllPlaylists)
+                {
+                    Console.WriteLine($"- {playlist.playlistName}");
+                }
+
+                Console.WriteLine("Enter the name of the playlist to add the album songs to:");
+                string choicePlaylistName = Console.ReadLine();
+                Playlist chosenPlaylist = Playlist.AllPlaylists.Find(p => p.playlistName == choicePlaylistName);
+
+                if (chosenPlaylist != null)
+                {
+                    foreach (Album album in allAlbumSongs)
+                    {
+                        Console.WriteLine(album.albumSongName); ;
+                        //foreach (Song song in allAlbumSongs)
+                        //{
+                        //    chosenPlaylist.Songs.Add(song);
+                        //}
+                    }
+
+                    //Console.WriteLine($"Added {selectedAlbum.songs.Count} songs from the '{selectedAlbum.albumSongName}' album to the '{chosenPlaylist.playlistName}' playlist.");
+                }
+                else
+                {
+                    Console.WriteLine($"Playlist '{choicePlaylistName}' not found.");
+                    return;
+                    
                 }
             }
         }

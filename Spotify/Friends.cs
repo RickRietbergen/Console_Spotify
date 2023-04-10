@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Spotify
 {
-    public class user
+    public class Friends
     {
 
     }
