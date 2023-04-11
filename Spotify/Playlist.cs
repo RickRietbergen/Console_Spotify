@@ -29,6 +29,12 @@ namespace Spotify
             new Playlist("cowboy", new List<Song>(Song.AllSongs)),
             new Playlist("queen", new List<Song>(Song.AllSongs.Take(2)))
         };
+        
+        public static List<Playlist> FriendsPlaylists { get; set; } = new List<Playlist>
+        {
+            //init playlists for friends.
+            new Playlist("my fav playlist", new List<Song>(Song.FriendsSongs)),
+        };
 
         public static void ViewPlaylists()
         {

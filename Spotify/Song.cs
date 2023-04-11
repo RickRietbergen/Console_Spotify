@@ -34,6 +34,12 @@ namespace Spotify
             new Song("come as you are", "Nirvana", 180),
             new Song("smells like teen spirit", "Nirvana", 200)
         };
+        
+        public static List<Song> FriendsSongs { get; set; } = new List<Song>
+        {
+            new Song("testnummer1", "test1", 120),
+            new Song("testnummer2", "test2", 140),
+        };
 
         public static void ViewSongs()
         {

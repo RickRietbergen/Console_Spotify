@@ -80,6 +80,9 @@ namespace Spotiy
                         break;
                     case "6" or "view-friends":
                         Console.WriteLine("view-friends");
+                        break;  
+                    case "7" or "compare-friends-playlist":
+                        Friends.ViewFriends();
                         break;               
                     default:
                         Console.WriteLine("Invalid option.");
@@ -105,6 +108,8 @@ namespace Spotiy
             Console.WriteLine("5. add-album-to-playlist");
             // 6. see ur friends, friends also have playlists(hardcoded). see which songs in playlists are the same.
             Console.WriteLine("6. view-friends");
+            // 7. Compare playlist of friends with ur own playlist to see which show which songs are the same.
+            Console.WriteLine("7. compare-friends-playlist");
             Console.WriteLine("====================");
         }
     }
