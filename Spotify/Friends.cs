@@ -31,13 +31,18 @@ namespace Spotify
             foreach (Friends friend in AllFriends)
             {
                 Console.WriteLine(friend.friendName);
-                foreach (Playlist playlist in friend.myPlaylist)
+                ViewPlaylistOfFriends(friend);
+            }
+        }
+
+        public static void ViewPlaylistOfFriends(Friends friend)
+        {
+            foreach (Playlist playlist in friend.myPlaylist)
+            {
+                Console.WriteLine($"- playlist.playlistName");
+                foreach (Song song in Song.FriendsSongs)
                 {
-                    Console.WriteLine(playlist.playlistName);
-                    foreach (Song song in Song.FriendsSongs)
-                    {
-                        Console.WriteLine(song.songName);
-                    }
+                    Console.WriteLine(song.songName);
                 }
             }
         }
