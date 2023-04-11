@@ -172,6 +172,7 @@ namespace Spotify
                             Thread.Sleep(1000);
                             if (!paused)
                             {
+                                //add second when playing.
                                 timeElapsed++;
                             }
                         }
@@ -179,6 +180,7 @@ namespace Spotify
                 }
                 else
                 {
+                    //write that playlistName does not exist.
                     Console.WriteLine($"Playlist '{selectedPlaylistName}' does not exist.");
                 }
             }
@@ -186,6 +188,7 @@ namespace Spotify
 
         public static void CreatePlaylist()
         {
+            //ask user for input, or exit if Q isPressed.
             Console.WriteLine("To Exit Press Key: Q");
             Console.WriteLine("Create a new playlist.");
             Console.Write("Enter the name of the playlist: ");
@@ -193,6 +196,7 @@ namespace Spotify
 
             if (newPlaylistName.ToLower() == "q" || newPlaylistName == null)
             {
+                //if newPlaylistName == q, or is equal to null, then clear console and return.
                 Console.Clear();
                 return;
             }
@@ -200,12 +204,15 @@ namespace Spotify
             {
                 if (!string.IsNullOrWhiteSpace(newPlaylistName))
                 {
+                    //if newPlaylistName is not null or whitespace then execute this code.
                     if (!AllPlaylists.Any(p => p.playlistName == newPlaylistName))
                     {
+                        //add playlist
                         Playlist newPlaylist = new Playlist(newPlaylistName);
                         AllPlaylists.Add(newPlaylist);
                         Console.WriteLine($"Playlist '{newPlaylistName}' has been created.");
 
+                        //show all new playlists.
                         Console.WriteLine("all playlists:");
                         foreach (Playlist playlist in AllPlaylists)
                         {
@@ -228,18 +235,20 @@ namespace Spotify
 
         public static void DeletePlaylist()
         {
+            //show all playlists.
             Console.WriteLine("All playlists:");
             foreach (Playlist playlist in AllPlaylists)
             {
                 Console.WriteLine(playlist.playlistName);
             }
-
+            //ask user for input which playlist needs to be deleted, or exit if Q isPressed.
             Console.WriteLine("To Exit Press Key: Q");
             Console.Write("\nChoose a playlist you want to delete: ");
             string deletePlaylistName = Console.ReadLine();
 
             if (deletePlaylistName.ToLower() == "q" || deletePlaylistName == null)
             {
+                //if deletePlaylistName == q, or is equal to null, then clear console and return.
                 Console.Clear();
                 return;
             }
@@ -247,12 +256,15 @@ namespace Spotify
             {
                 if (!string.IsNullOrWhiteSpace(deletePlaylistName))
                 {
+                    //search through all playlist and look if there's a playlist with the same name, is == true, then set val to var playlistToDelete.
                     Playlist playlistToDelete = AllPlaylists.FirstOrDefault(p => p.playlistName == deletePlaylistName);
                     if (playlistToDelete != null)
                     {
+                        //remove playlist by var playlistToDelete.
                         AllPlaylists.Remove(playlistToDelete);
                         Console.WriteLine($"Playlist '{deletePlaylistName}' has been deleted.");
 
+                        //show all new playlists.
                         Console.WriteLine("all playlists:");
                         foreach (Playlist playlist in AllPlaylists)
                         {
@@ -264,11 +276,13 @@ namespace Spotify
                     }
                     else
                     {
+                        //playlist name does not exits
                         Console.WriteLine($"Playlist '{deletePlaylistName}' does not exist.");
                     }
                 }
                 else
                 {
+                    //playlist name does not exits
                     Console.WriteLine("Error. Please enter a playlist name.");
                 }
             }

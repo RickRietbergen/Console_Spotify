@@ -33,7 +33,7 @@ namespace Spotiy
                         Console.WriteLine("1. create-playlist");
                         Console.WriteLine("2. delete-playlist");
                         Console.WriteLine("Choose an option:");
-                        //create var with awnser and go to selected function
+                        //create var with awnser named choiceManagePlaylists and go to selected function
                         string choiceManagePlaylists = Console.ReadLine();
 
                         switch (choiceManagePlaylists)
@@ -52,16 +52,20 @@ namespace Spotiy
                         }
                         break;
                     case "3" or "manage-song":
+                        //ask user which option you want to execute.
                         Console.WriteLine("1. add-song");
                         Console.WriteLine("2. delete-song");
+                        //create var with awnser named choiceManagesongs and go to selected function
                         string choiceManagesongs = Console.ReadLine();
 
                         switch (choiceManagesongs)
                         {
                             case "1" or "add-song":
+                                //case 1 or "add-song, go to function Song.AddSong();.
                                 Song.AddSong();
                                 break;
                             case "2" or "delete-song":
+                                //case 2 or "add-song, go to function Song.RemoveSong();.
                                 Song.RemoveSong();
                                 break;
                         }
