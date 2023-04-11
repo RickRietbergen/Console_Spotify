@@ -8,7 +8,7 @@ namespace Spotify
 {
     public class Album
     {
-        //properties
+        //properties.
         public static List<Album> Albums { get; set; } = new List<Album>();
         public string albumName { get; set; }
         public string albumArtistName { get; set; }
@@ -232,6 +232,7 @@ namespace Spotify
                 {
                     foreach (Song song in selectedAlbum.songs)
                     {
+                        //
                         chosenPlaylist.Songs.Add(song);
                     }
                 
@@ -244,6 +245,6 @@ namespace Spotify
                     
                 }
             }
-        }
+        }       
     }
 }
