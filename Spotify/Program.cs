@@ -39,9 +39,11 @@ namespace Spotiy
                         switch (choiceManagePlaylists)
                         {
                             case "1" or "create-playlist":
+                                //case 1, execute function Playlist.CreatePlaylist().
                                 Playlist.CreatePlaylist();
-                                break; 
+                                break;
                             case "2" or "delete-playlist":
+                                //case 2, execute function Playlist.CreatePlaylist().
                                 Playlist.DeletePlaylist();
                                 break;
                             default:
