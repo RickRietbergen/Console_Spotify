@@ -113,7 +113,7 @@ namespace Spotify
                 Console.WriteLine($"- {song.songName}");
             }
             //after 2 sec, clear console.
-            Thread.Sleep(2000);
+            Thread.Sleep(3000);
             Console.Clear();
         }
     }

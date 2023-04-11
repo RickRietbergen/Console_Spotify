@@ -127,6 +127,10 @@ namespace Spotify
             {
                 //read songname that needs to be deleted.
                 Console.Write("Enter the name of the song you want to remove: ");
+                foreach (Song song in AllSongs)
+                {
+                    Console.WriteLine(song.songName);
+                }
                 string songName = Console.ReadLine();
 
                 //find song in playlist.
@@ -146,16 +150,19 @@ namespace Spotify
                     }
                     else
                     {
+                        //error songName not found.
                         Console.WriteLine($"Error: {songName} not found in {playlistName}");
                     }
                 }
                 else
                 {
+                    //error songName not found.
                     Console.WriteLine($"Error: song '{songName}' not found");
                 }
             }
             else
             {
+                //error playlistName not found.
                 Console.WriteLine($"Error: playlist '{playlistName}' not found");
             }
         }
