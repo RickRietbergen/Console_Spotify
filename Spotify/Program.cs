@@ -71,17 +71,16 @@ namespace Spotiy
                         }
                         break;
                     case "4" or "view-albums":
+                        //execute function Album.ViewAlbums().
                         Album.ViewAlbums();
                         break;
                     case "5" or "add-album-to-playlist":
+                        //execute function Album.AddAlbumToPlaylist().
                         Album.AddAlbumToPlaylist();
                         break;
                     case "6" or "view-friends":
                         Console.WriteLine("view-friends");
-                        break;
-                    case "7":
-                        Song.ViewSongs();
-                        break;                    
+                        break;               
                     default:
                         Console.WriteLine("Invalid option.");
                         break;

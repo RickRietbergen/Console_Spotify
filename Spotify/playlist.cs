@@ -9,6 +9,7 @@ namespace Spotify
 {
     public class Playlist
     {
+        //properties
         public List<Song> Songs { get; set; }
         public string playlistName { get; set; }
         public static bool isPlaying { get; set; } = false; 
@@ -52,7 +53,7 @@ namespace Spotify
 
             if (selectedPlaylistName.ToLower() == "q" || selectedPlaylistName == null)
             {
-                //clear console and return if Q isPressed, orselectedPlaylistName == null
+                //clear console and return if Q isPressed, or if selectedPlaylistName == null
                 Console.Clear();
                 return;     
             }
@@ -76,7 +77,7 @@ namespace Spotify
                     string songChoice = Console.ReadLine();
                     Song selectedSong;
 
-                    //if songChoice == shuffle, then play a random song from playlist.
+                    //if songChoice == shuffle, then play a random song from the playlist.
                     if (songChoice.ToLower() == "shuffle")
                     {
                         Random rand = new Random();
@@ -96,7 +97,7 @@ namespace Spotify
 
                     if (Song.AllSongs.Contains(selectedSong))
                     {
-                        //clear console and show data of song. name, artist, durartion of song.
+                        //clear console and show data of song. name, artist, durartion of song that is playing.
                         Console.Clear();
                         Console.WriteLine($"Song selected: {selectedSong.songName}");
                         Console.WriteLine($"Artist: {songArtist}");
@@ -107,13 +108,13 @@ namespace Spotify
                         {
                             if (!paused)
                             {
-                                //if paused == false then show that the song is playing.
+                                //if paused == false then show that the song is playing with the timer that updates each second.
                                 Console.SetCursorPosition(0, Console.CursorTop);
                                 Console.Write($"playing... {selectedSong.songName} ({timeElapsed}/{songDuration})");
 
                                 if (timeElapsed > songDuration)
                                 {
-                                    //if time is greater then songduration. stop playing en write that the song is finished.
+                                    //if timeElapsed is greater then songduration. stop playing en write that the song is finished.
                                     Console.WriteLine("\nSong finished!");
                                     isPlaying = false;
                                 }
@@ -152,14 +153,14 @@ namespace Spotify
                                         }
                                         break;
                                     case ConsoleKey.S:
-                                        //if E is pressed, isPlaying to false, write that the song is skipped and clear console after 2 sec.
+                                        //if S is pressed, isPlaying to false, write that the song is skipped and clear console after 2 sec.
                                         isPlaying = false;
                                         Console.WriteLine("\nSong skipped.");
                                         Thread.Sleep(2000);
                                         Console.Clear();
                                         break;
                                     case ConsoleKey.Q:
-                                        //if E is pressed, isPlaying to false, write that ur quitting and clear console after 2 sec.
+                                        //if Q is pressed, isPlaying to false, write that ur quitting and clear console after 2 sec.
                                         isPlaying = false;
                                         Console.WriteLine("\nQuitting...");
                                         Thread.Sleep(2000);
@@ -172,7 +173,7 @@ namespace Spotify
                             Thread.Sleep(1000);
                             if (!paused)
                             {
-                                //add second when playing.
+                                //add 1 to timeElapsed each second when playing.
                                 timeElapsed++;
                             }
                         }

@@ -8,111 +8,113 @@ namespace Spotify
 {
     public class Album
     {
-        public List<Album> Albums { get; set; }
-        public string albumSongName { get; set; }
+        //properties
+        public static List<Album> Albums { get; set; } = new List<Album>();
+        public string albumName { get; set; }
         public string albumArtistName { get; set; }
-        public int songDuration { get; set; }
         public static bool isPlaying { get; set; } = false;
         public static bool paused { get; set; } = false;
         public static int timeElapsed { get; set; } = 0;
-        public IEnumerable<Song> songs { get; private set; }
+        public List<Song> songs { get; private set; }
 
-        public Album(string albumSongName, string albumArtistName, int songDuration)
+        public Album(string albumName, string albumArtistName, List<Song> AllAlbumSongs = null)
         {
-            this.albumSongName = albumSongName;
+            //construstor for Album
+            this.albumName = albumName;
             this.albumArtistName = albumArtistName;
-            this.songDuration = songDuration;
-            Albums = new List<Album>();
+            songs = AllAlbumSongs ?? new List<Song>();
         }
-
-        public Album(string albumSongName, List<Album> allAlbumSongs = null)
-        {
-            this.albumSongName = albumSongName;
-            allAlbumSongs = allAlbumSongs ?? new List<Album>();
-        }
-
-        public static List<Album> allAlbumSongs { get; set; } = new List<Album>
-        {
-            new Album("smells like teen spirit", "nirvana", 120),
-            new Album("come as you are", "nirvana", 140),
-            new Album("the man who sold the world", "Nirvana", 160),
-            new Album("about a girl", "Nirvana", 180),
-            new Album("polly", "Nirvana", 200)
-        };
-
         public static List<Album> AllAlbums { get; set; } = new List<Album>
         {
-            new Album("nirvana", new List<Album>(allAlbumSongs))
+            //create instance of allAlbums.
+            new Album("nirvana", "nirvana", new List<Song>(Song.AllAlbumSongs))
         };
 
         public static void ViewAlbums()
         {
+            //show all albums.
             Console.WriteLine("All albums:");
             foreach (Album albums in AllAlbums)
             {
-                Console.WriteLine($"- {albums.albumSongName}");
+                Console.WriteLine($"- {albums.albumName}");
             }
+            //execute PlayAlbum().
             PlayAlbum();
         }
 
         public static void PlayAlbum()
         {
+            //ask the user to choose a album, or press Q to exit.
             Console.WriteLine("To Exit Press Key: Q");
             Console.Write("Choose an album: ");
             string selectedAlbumName = Console.ReadLine();
-            Album selectedAlbum = Album.AllAlbums.FirstOrDefault(a => a.albumSongName == selectedAlbumName);
+            //check if allAlbums contains a album that the user has entered.
+            Album selectedAlbum = Album.AllAlbums.FirstOrDefault(a => a.albumName == selectedAlbumName);
 
             if (selectedAlbumName.ToLower() == "q" || selectedAlbumName == null)
             {
+                //clear console and return if Q isPressed, or if selectedAlbumName == null
                 Console.Clear();
                 return;
             }
             else
             {
+                //ask user to shuffle or select a song from album.
                 Console.Clear();
                 if (Album.AllAlbums.Contains(selectedAlbum))
                 {
                     Console.WriteLine("Choose 'shuffle' to play a random song, or choose a song you want to play.");
                     Console.WriteLine($"album: '{selectedAlbumName}':");
+                    //show all songs from album.
                     Console.WriteLine("Songs:");
-                    foreach (Album albums in allAlbumSongs)
+                    foreach (Song songs in Song.AllAlbumSongs)
                     {
-                        Console.WriteLine($"-- {albums.albumSongName}");
+                        Console.WriteLine($"-- {songs.songName}");
                     }
 
                     Console.WriteLine("Choose a song:");
                     string songChoice = Console.ReadLine();
-                    Album selectedSong;
+                    Song selectedSong;
 
+                    //if songChoice == shuffle, then play a random song from the album
                     if (songChoice.ToLower() == "shuffle")
                     {
                         Random rand = new Random();
-                        selectedSong = Album.allAlbumSongs[rand.Next(0, Album.allAlbumSongs.Count)];
+                        selectedSong = selectedAlbum.songs[rand.Next(0, selectedAlbum.songs.Count)];
                     }
+                    //else play entered song
                     else
                     {
-                        selectedSong = Album.allAlbumSongs.FirstOrDefault(s => s.albumSongName == songChoice);
+                        selectedSong = selectedAlbum.songs.FirstOrDefault(s => s.songName == songChoice);
                     }
 
                     //play the selected song
+                    //set isPlaying to true to enter the while loop if the song is contained in the album.
                     isPlaying = true;
                     int songDuration = selectedSong.songDuration;
-                    string songArtist = selectedSong.albumArtistName;
+                    string songArtist = selectedSong.artistName;
 
-                    if (allAlbumSongs.Contains(selectedSong))
+                    if (selectedSong == null)
                     {
+                        Console.WriteLine("album doesnt contain song");
+                        return;
+                    }
+                        //clear console and show data of song. name, artist, durartion of song that is playing.
                         Console.Clear();
-                        Console.WriteLine($"Song selected: {selectedSong.albumSongName}");
+                        Console.WriteLine($"Song selected: {selectedSong.songName}");
                         Console.WriteLine($"Artist: {songArtist}");
                         Console.WriteLine($"Duration: {songDuration}");
 
+                        //while isPlaying == true then execute this code.
                         while (isPlaying)
                         {
                             if (!paused)
                             {
+                                //if paused == false then show that the song is playing with the timer that updates each second.
                                 Console.SetCursorPosition(0, Console.CursorTop);
-                                Console.Write($"playing... {selectedSong.albumSongName} ({timeElapsed}/{songDuration})");
+                                Console.Write($"playing... {selectedSong.songName} ({timeElapsed}/{songDuration})");
 
+                                //if timeElapsed is greater then songduration. stop playing en write that the song is finished.
                                 if (timeElapsed > songDuration)
                                 {
                                     Console.WriteLine("\nSong finished!");
@@ -120,6 +122,7 @@ namespace Spotify
                                 }
                             }
 
+                            //check if a key is pressed
                             if (Console.KeyAvailable)
                             {
                                 ConsoleKey key = Console.ReadKey(true).Key;
@@ -129,6 +132,7 @@ namespace Spotify
                                     case ConsoleKey.P:
                                         if (!paused)
                                         {
+                                            //if P is pressed, then check if paused == false the set paused to true, and write that the song is paused.
                                             paused = true;
                                             Console.WriteLine("\nPaused Song.");
                                         }
@@ -136,25 +140,29 @@ namespace Spotify
                                     case ConsoleKey.R:
                                         if (paused)
                                         {
+                                            //if R is pressed, then check if paused == ture the set paused to false, and write that the song is resuming with the name of the song.
                                             paused = false;
-                                            Console.WriteLine($"Resuming song {selectedSong.albumSongName}.");
+                                            Console.WriteLine($"Resuming song {selectedSong.songName}.");
                                         }
                                         break;
                                     case ConsoleKey.E:
                                         if (paused)
                                         {
+                                            //if E is pressed, then check if paused == ture the set timeElapsed = 0, write that the song is repeating with the name of the song, and set pause to false.
                                             timeElapsed = 0;
-                                            Console.WriteLine($"Repeating song {selectedSong.albumSongName}");
+                                            Console.WriteLine($"Repeating song {selectedSong.songName}");
                                             paused = false;
                                         }
                                         break;
                                     case ConsoleKey.S:
+                                        //if S is pressed, isPlaying to false, write that the song is skipped and clear console after 2 sec.
                                         isPlaying = false;
                                         Console.WriteLine("\nSong skipped.");
                                         Thread.Sleep(2000);
                                         Console.Clear();
                                         break;
                                     case ConsoleKey.Q:
+                                        //if Q is pressed, isPlaying to false, write that ur quitting and clear console after 2 sec.
                                         isPlaying = false;
                                         Console.WriteLine("\nQuitting...");
                                         Thread.Sleep(2000);
@@ -168,13 +176,15 @@ namespace Spotify
                             Thread.Sleep(1000);
                             if (!paused)
                             {
+                                //add 1 to timeElapsed each second when playing.
                                 timeElapsed++;
                             }
                         }
-                    }
+                    
                 }
                 else
                 {
+                    //write that albumName does not exist.
                     Console.WriteLine($"Album '{selectedAlbumName}' does not exist.");
                 }
             }
@@ -182,16 +192,20 @@ namespace Spotify
 
         public static void AddAlbumToPlaylist()
         {
+            //show all albums
             Console.WriteLine("All albums:");
             foreach (Album album in AllAlbums)
             {
-                Console.WriteLine($"- {album.albumSongName}");
+                Console.WriteLine($"- {album.albumName}");
             }
 
+            //ask user to enter the name of the album you want to add to a specific playlist.
             Console.WriteLine("Which album do you want to add to a playlist:");
             string choiceAlbumName = Console.ReadLine();
-            Album selectedAlbum = Album.AllAlbums.FirstOrDefault(a => a.albumSongName == choiceAlbumName);
+            //loop through AllAlbums and check if there is a albumSongName that is equal to choiceAlbumName.
+            Album selectedAlbum = Album.AllAlbums.FirstOrDefault(a => a.albumName == choiceAlbumName);
 
+            //check entered input if choiceAlbumName is equal to Q, or choiceAlbumName/selectedAlbum are equal to null.
             if (choiceAlbumName.ToLower() == "q" || choiceAlbumName == null || selectedAlbum == null)
             {
                 Console.WriteLine($"Album {choiceAlbumName} does not exist.");
@@ -201,28 +215,27 @@ namespace Spotify
             }
             else
             {
+                //show all playlists.
                 Console.WriteLine("All playlists:");
                 foreach (Playlist playlist in Playlist.AllPlaylists)
                 {
                     Console.WriteLine($"- {playlist.playlistName}");
                 }
 
+                //ask user to enter a name of a playlist.
                 Console.WriteLine("Enter the name of the playlist to add the album songs to:");
                 string choicePlaylistName = Console.ReadLine();
+                //loop through all playlist and see if there's a playlistname that is equal to entered name.
                 Playlist chosenPlaylist = Playlist.AllPlaylists.Find(p => p.playlistName == choicePlaylistName);
 
                 if (chosenPlaylist != null)
                 {
-                    foreach (Album album in allAlbumSongs)
+                    foreach (Song song in selectedAlbum.songs)
                     {
-                        Console.WriteLine(album.albumSongName);
-                        //foreach (Song song in allAlbumSongs)
-                        //{
-                        //    chosenPlaylist.Songs.Add(song);
-                        //}
+                        chosenPlaylist.Songs.Add(song);
                     }
-
-                    //Console.WriteLine($"Added {selectedAlbum.songs.Count} songs from the '{selectedAlbum.albumSongName}' album to the '{chosenPlaylist.playlistName}' playlist.");
+                
+                    Console.WriteLine($"Added {selectedAlbum.songs.Count} songs from the '{selectedAlbum.albumName}' album to the '{chosenPlaylist.playlistName}' playlist.");
                 }
                 else
                 {
