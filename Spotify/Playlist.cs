@@ -9,6 +9,7 @@ namespace Spotify
 {
     public class Playlist
     {
+        //properties
         public List<Song> Songs { get; set; }
         public string playlistName { get; set; }
         public static bool isPlaying { get; set; } = false; 
@@ -52,7 +53,7 @@ namespace Spotify
 
             if (selectedPlaylistName.ToLower() == "q" || selectedPlaylistName == null)
             {
-                //clear console and return if Q isPressed, orselectedPlaylistName == null
+                //clear console and return if Q isPressed, or if selectedPlaylistName == null
                 Console.Clear();
                 return;     
             }
@@ -76,7 +77,7 @@ namespace Spotify
                     string songChoice = Console.ReadLine();
                     Song selectedSong;
 
-                    //if songChoice == shuffle, then play a random song from playlist.
+                    //if songChoice == shuffle, then play a random song from the playlist.
                     if (songChoice.ToLower() == "shuffle")
                     {
                         Random rand = new Random();
@@ -96,7 +97,7 @@ namespace Spotify
 
                     if (Song.AllSongs.Contains(selectedSong))
                     {
-                        //clear console and show data of song. name, artist, durartion of song.
+                        //clear console and show data of song. name, artist, durartion of song that is playing.
                         Console.Clear();
                         Console.WriteLine($"Song selected: {selectedSong.songName}");
                         Console.WriteLine($"Artist: {songArtist}");
@@ -107,13 +108,13 @@ namespace Spotify
                         {
                             if (!paused)
                             {
-                                //if paused == false then show that the song is playing.
+                                //if paused == false then show that the song is playing with the timer that updates each second.
                                 Console.SetCursorPosition(0, Console.CursorTop);
                                 Console.Write($"playing... {selectedSong.songName} ({timeElapsed}/{songDuration})");
 
                                 if (timeElapsed > songDuration)
                                 {
-                                    //if time is greater then songduration. stop playing en write that the song is finished.
+                                    //if timeElapsed is greater then songduration. stop playing en write that the song is finished.
                                     Console.WriteLine("\nSong finished!");
                                     isPlaying = false;
                                 }
@@ -152,14 +153,14 @@ namespace Spotify
                                         }
                                         break;
                                     case ConsoleKey.S:
-                                        //if E is pressed, isPlaying to false, write that the song is skipped and clear console after 2 sec.
+                                        //if S is pressed, isPlaying to false, write that the song is skipped and clear console after 2 sec.
                                         isPlaying = false;
                                         Console.WriteLine("\nSong skipped.");
                                         Thread.Sleep(2000);
                                         Console.Clear();
                                         break;
                                     case ConsoleKey.Q:
-                                        //if E is pressed, isPlaying to false, write that ur quitting and clear console after 2 sec.
+                                        //if Q is pressed, isPlaying to false, write that ur quitting and clear console after 2 sec.
                                         isPlaying = false;
                                         Console.WriteLine("\nQuitting...");
                                         Thread.Sleep(2000);
@@ -172,6 +173,7 @@ namespace Spotify
                             Thread.Sleep(1000);
                             if (!paused)
                             {
+                                //add 1 to timeElapsed each second when playing.
                                 timeElapsed++;
                             }
                         }
@@ -179,6 +181,7 @@ namespace Spotify
                 }
                 else
                 {
+                    //write that playlistName does not exist.
                     Console.WriteLine($"Playlist '{selectedPlaylistName}' does not exist.");
                 }
             }
@@ -186,6 +189,7 @@ namespace Spotify
 
         public static void CreatePlaylist()
         {
+            //ask user for input, or exit if Q isPressed.
             Console.WriteLine("To Exit Press Key: Q");
             Console.WriteLine("Create a new playlist.");
             Console.Write("Enter the name of the playlist: ");
@@ -193,6 +197,7 @@ namespace Spotify
 
             if (newPlaylistName.ToLower() == "q" || newPlaylistName == null)
             {
+                //if newPlaylistName == q, or is equal to null, then clear console and return.
                 Console.Clear();
                 return;
             }
@@ -200,12 +205,15 @@ namespace Spotify
             {
                 if (!string.IsNullOrWhiteSpace(newPlaylistName))
                 {
+                    //if newPlaylistName is not null or whitespace then execute this code.
                     if (!AllPlaylists.Any(p => p.playlistName == newPlaylistName))
                     {
+                        //add playlist
                         Playlist newPlaylist = new Playlist(newPlaylistName);
                         AllPlaylists.Add(newPlaylist);
                         Console.WriteLine($"Playlist '{newPlaylistName}' has been created.");
 
+                        //show all new playlists.
                         Console.WriteLine("all playlists:");
                         foreach (Playlist playlist in AllPlaylists)
                         {
@@ -228,18 +236,20 @@ namespace Spotify
 
         public static void DeletePlaylist()
         {
+            //show all playlists.
             Console.WriteLine("All playlists:");
             foreach (Playlist playlist in AllPlaylists)
             {
                 Console.WriteLine(playlist.playlistName);
             }
-
+            //ask user for input which playlist needs to be deleted, or exit if Q isPressed.
             Console.WriteLine("To Exit Press Key: Q");
             Console.Write("\nChoose a playlist you want to delete: ");
             string deletePlaylistName = Console.ReadLine();
 
             if (deletePlaylistName.ToLower() == "q" || deletePlaylistName == null)
             {
+                //if deletePlaylistName == q, or is equal to null, then clear console and return.
                 Console.Clear();
                 return;
             }
@@ -247,12 +257,15 @@ namespace Spotify
             {
                 if (!string.IsNullOrWhiteSpace(deletePlaylistName))
                 {
+                    //search through all playlist and look if there's a playlist with the same name, is == true, then set val to var playlistToDelete.
                     Playlist playlistToDelete = AllPlaylists.FirstOrDefault(p => p.playlistName == deletePlaylistName);
                     if (playlistToDelete != null)
                     {
+                        //remove playlist by var playlistToDelete.
                         AllPlaylists.Remove(playlistToDelete);
                         Console.WriteLine($"Playlist '{deletePlaylistName}' has been deleted.");
 
+                        //show all new playlists.
                         Console.WriteLine("all playlists:");
                         foreach (Playlist playlist in AllPlaylists)
                         {
@@ -264,11 +277,13 @@ namespace Spotify
                     }
                     else
                     {
+                        //playlist name does not exits
                         Console.WriteLine($"Playlist '{deletePlaylistName}' does not exist.");
                     }
                 }
                 else
                 {
+                    //playlist name does not exits
                     Console.WriteLine("Error. Please enter a playlist name.");
                 }
             }
