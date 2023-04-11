@@ -8,12 +8,14 @@ namespace Spotify
 {
     public class Song
     {
+        //properties.
         public string songName { get; set; }
         public string artistName { get; set; }
         public int songDuration { get; set; }
 
         public Song(string songName, string artistName, int songDuration)
         {
+            //construstor for Song
             this.songName = songName;
             this.artistName = artistName;
             this.songDuration = songDuration;
@@ -21,6 +23,7 @@ namespace Spotify
 
         public static List<Song> AllSongs { get; set; } = new List<Song>
         {
+            //init some songs.
             new Song("testnummer", "Richard", 120),
             new Song("your man", "Josh Turner", 180),
             new Song("smells like teen spirit", "Nirvana", 200)
@@ -28,6 +31,7 @@ namespace Spotify
         
         public static List<Song> AllAlbumSongs { get; set; } = new List<Song>
         {
+            //init songs for album 'nirvana'.
             new Song("polly", "nirvana", 120),
             new Song("the man who sold the world", "nirvana", 140),
             new Song("about a girl", "nirvana", 160),
@@ -37,12 +41,14 @@ namespace Spotify
         
         public static List<Song> FriendsSongs { get; set; } = new List<Song>
         {
+            //add songs for friends.
             new Song("testnummer", "Richard", 120),
             new Song("smells like teen spirit", "Nirvana", 200),
         };
 
         public static void ViewSongs()
         {
+            //show all songs.
             Console.WriteLine("\nAll songs: ");
             foreach (Playlist playlist in Playlist.AllPlaylists)
             {
@@ -56,6 +62,7 @@ namespace Spotify
 
         public static void AddSong()
         {
+            //ask user which playlist u want to add a song to, and show all playlists.
             Console.WriteLine("To which playlist do you want to add a song:");
             foreach (Playlist playlist in Playlist.AllPlaylists)
             {
@@ -64,11 +71,12 @@ namespace Spotify
 
             Console.Write("Enter the name of the playlist you want to add the song to: ");
             string playlistName = Console.ReadLine();
-
+            //loop through all playlists.
             Playlist addSongToPlaylist = Playlist.AllPlaylists.Find(p => p.playlistName == playlistName);
 
             if (addSongToPlaylist != null)
             {
+                //ask user for songName, artistName, songDuration.
                 Console.Write("Enter the song name: ");
                 string songName = Console.ReadLine();
 
@@ -77,10 +85,10 @@ namespace Spotify
 
                 Console.Write("Enter the song duration (in seconds): ");
                 int songDuration = int.Parse(Console.ReadLine());
-
+                //add song to chosen playlist
                 addSongToPlaylist.Songs.Add(new Song(songName, artistName, songDuration));
                 Console.WriteLine($"Added {songName} by {artistName} ({songDuration} seconds) to {playlistName}");
-
+                //show all playlists.
                 foreach (Playlist playlist in Playlist.AllPlaylists)
                 {
                     Console.WriteLine($"Playlist: {playlist.playlistName}");
@@ -90,18 +98,20 @@ namespace Spotify
                         Console.WriteLine(song.songName);
                     }
                 }
-
+                //sleep 2 sec and clear console.
                 Thread.Sleep(2000);
                 Console.Clear();
             }
             else
             {
+                //error message, playlist not found.
                 Console.WriteLine($"Error: playlist '{playlistName}' not found");
             }
         }
 
         public static void RemoveSong()
         {
+            //ask user from which playlist u want to delete a song, show all playlists.
             Console.WriteLine("From which playlist do you want to remove a song:");
             foreach (Playlist playlist in Playlist.AllPlaylists)
             {
@@ -110,14 +120,16 @@ namespace Spotify
 
             Console.Write("Enter the name of the playlist you want to remove the song from: ");
             string playlistName = Console.ReadLine();
-
+            //loop through all playlists.
             Playlist removeSongFromPlaylist = Playlist.AllPlaylists.Find(p => p.playlistName == playlistName);
 
             if (removeSongFromPlaylist != null)
             {
+                //read songname that needs to be deleted.
                 Console.Write("Enter the name of the song you want to remove: ");
                 string songName = Console.ReadLine();
 
+                //find song in playlist.
                 Song removeSong = Song.AllSongs.Find(s => s.songName == songName);
 
                 if (removeSong != null)

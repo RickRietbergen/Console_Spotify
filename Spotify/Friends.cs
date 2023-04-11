@@ -106,11 +106,13 @@ namespace Spotify
                 }
             }
 
+            //show how many songs are in common.
             Console.WriteLine($"Your playlist '{myOwnPlaylist}' and your friend's playlist '{FriendsPlaylist.playlistName}' have {commonSongs.Count} songs in common:");
             foreach (Song song in commonSongs)
             {
                 Console.WriteLine($"- {song.songName}");
             }
+            //after 2 sec, clear console.
             Thread.Sleep(2000);
             Console.Clear();
         }

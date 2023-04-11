@@ -79,12 +79,15 @@ namespace Spotiy
                         Album.AddAlbumToPlaylist();
                         break;
                     case "6" or "view-friends":
+                        //execute  Friends.ViewFriends().
                         Friends.ViewFriends();
                         break;  
                     case "7" or "compare-friends-playlist":
+                        //execute function Friends.ComparePlaylist().
                         Friends.ComparePlaylist();
                         break;               
                     default:
+                        //if no case is entered, give error message for 'invalid option'.
                         Console.WriteLine("Invalid option.");
                         break;
                 }

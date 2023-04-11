@@ -232,7 +232,7 @@ namespace Spotify
                 {
                     foreach (Song song in selectedAlbum.songs)
                     {
-                        //
+                        //add all song to chosenplaylist.
                         chosenPlaylist.Songs.Add(song);
                     }
                 
