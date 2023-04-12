@@ -94,13 +94,30 @@ namespace Spotify
                     {
                         selectedSong = Song.AllSongs.FirstOrDefault(s => s.songName == songChoice);
                     }
-
+                    //if selected song == null, then 
+                    if (selectedSong == null)
+                    {
+                        Console.WriteLine("song not found.");
+                        Console.Write("Enter a song name:");
+                        songChoice = Console.ReadLine();
+                        //if songChoice == shuffle, then play a random song from the playlist.
+                        if (songChoice.ToLower() == "shuffle")
+                        {
+                            Random rand = new Random();
+                            selectedSong = Song.AllSongs[rand.Next(0, Song.AllSongs.Count)];
+                        }
+                        //else play entered song.
+                        else
+                        {
+                            selectedSong = Song.AllSongs.FirstOrDefault(s => s.songName == songChoice);
+                        }
+                    }
                     //play the selected song
                     //set isPlaying to true to enter the while loop if the song is contained in the playlist.
                     isPlaying = true;
                     int songDuration = selectedSong.songDuration;
                     string songArtist = selectedSong.artistName;
-
+                    int currentIndex = Song.AllSongs.IndexOf(selectedSong);
                     if (Song.AllSongs.Contains(selectedSong))
                     {
                         //clear console and show data of song. name, artist, durartion of song that is playing.
@@ -150,18 +167,26 @@ namespace Spotify
                                         }
                                         break;
                                     case ConsoleKey.E:
-                                        if (paused)
-                                        {
-                                            //if E is pressed, then check if paused == ture the set timeElapsed = 0, write that the song is repeating with the name of the song, and set pause to false.
-                                            timeElapsed = 0;
-                                            Console.WriteLine($"Repeating song {selectedSong.songName}");
-                                            paused = false;
-                                        }
+                                        //if E is pressed, then check if paused == ture the set timeElapsed = 0, write that the song is repeating with the name of the song, and set pause to false.
+                                        timeElapsed = 0;
+                                        Console.WriteLine($"Repeating song {selectedSong.songName}");
+                                        paused = false;
                                         break;
                                     case ConsoleKey.S:
                                         //if S is pressed, isPlaying to false, write that the song is skipped and clear console after 2 sec.
                                         isPlaying = false;
-                                        Console.WriteLine("\nSong skipped.");
+                                        currentIndex++;
+                                        if (currentIndex >= Song.AllSongs.Count)
+                                        {
+                                            // If we've reached the end of the playlist, loop back to the beginning
+                                            currentIndex = 0;
+                                        }
+                                        selectedSong = Song.AllSongs[currentIndex];
+                                        // Start playing the next song
+                                        isPlaying = true;
+                                        paused = false;
+                                        timeElapsed = 0;
+                                        Console.WriteLine("\nSkipping to next song...");
                                         Thread.Sleep(2000);
                                         Console.Clear();
                                         break;
@@ -189,6 +214,8 @@ namespace Spotify
                 {
                     //write that playlistName does not exist.
                     Console.WriteLine($"Playlist '{selectedPlaylistName}' does not exist.");
+                    Thread.Sleep(2000);
+                    Console.Clear();
                 }
             }
         }
